@@ -68,8 +68,8 @@ class Index
                                             <div class="layui-input-block">
                                                 <select name="city" lay-verify="">
                                                     <option value=""></option>
-                                                    <option value="0">广东办事处</option>
-                                                    <option value="1">四川办事处</option>
+                                                    <option value="1">广东办事处</option>
+                                                    <option value="2">四川办事处</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -157,12 +157,17 @@ class Index
                 //执行渲染
                 table.render({
                     elem: '#table' //指定原始表格元素选择器（推荐id选择器）
+                    , url: './index.php?c=Ajax&a=SelectIndex'
+                    , request: {
+                        pageName: 'page' //页码的参数名称，默认：page
+                        , limitName: 'limit' //每页数据量的参数名，默认：limit
+                    }
                     , cols: [[ //标题栏
                         {field: 'id', title: 'ID', width: 80}
-                        , {field: 'bsc', title: '办事处', width: 120}
-                        , {field: 'shop_id', title: '店铺编号', width: 130}
-                        , {field: 'shop_name', title: '店铺名', width: 130}
-                        , {field: 'declare_data', title: '申报日期', width: 120}
+                        , {field: 'officeCN', title: '办事处', width: 120}
+                        , {field: 'sid', title: '店铺编号', width: 130}
+                        , {field: 'sname', title: '店铺名', width: 130}
+                        , {field: 'declare_date', title: '申报日期', width: 120}
                         , {field: 'open_date', title: '开业日期', width: 120}
                         , {field: 'state', title: '状态', width: 120}
                         , {field: 'step', title: '步骤', width: 120}
@@ -170,7 +175,7 @@ class Index
                         , {fixed: 'right', title: '操作', width: 130, align: 'center', toolbar: '#barDemo'}
                     ]] //设置表头
                     , page: true //开启分页
-                    ,  data: [{id:1}]
+//                    ,  data: [{id:1}]
                     ,limits: [10,20,30]
                     ,limit: 10
                 //,…… //更多参数参考右侧目录：基本参数选项

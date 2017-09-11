@@ -16,7 +16,7 @@
 //define("DBNAME","report");//数据库
 
 
-define('DB_NAME','report');     //数据库
+define('DB_NAME','h2');     //数据库
 define('DB_USER','root');       //账户
 define('DB_PASSWD','');     //密码
 define('DB_HOST','localhost');  //主机地址
