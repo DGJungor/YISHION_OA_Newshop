@@ -81,7 +81,7 @@ class Index
                                                 <select name="state" lay-verify="">
                                                     <option value=""></option>
                                                     <option value="1">开启</option>
-                                                    <option value="0">关闭</option>
+                                                    <option value="2">关闭</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -128,7 +128,7 @@ class Index
             </div>
 
             <div class="layui-row">
-                <table id="table"></table>
+                <table id="table" lay-filter="demo"></table>
                 <script type="text/html" id="barDemo">
                     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">明细</a>
                 </script>
@@ -187,6 +187,7 @@ class Index
 //                    console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
                     console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
 
+
                     var tableIns = table.render({
                         elem: '#table'
                         , method: 'post'
@@ -229,7 +230,25 @@ class Index
                 table.on('tool(demo)', function (obj) {
                     var data = obj.data;
                     if (obj.event === 'detail') {
-                        layer.msg('ID：' + data.id + ' 的查看操作');
+//                        layer.msg('ID：' + data.id + ' 的查看操作');
+
+                        //示范一个公告层
+                        layer.open({
+                            type: 1
+                            ,title: false //不显示标题栏
+                            ,closeBtn: false
+                            ,area: '600px;'
+                            ,shade: 0.8
+                            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                            ,resize: false
+                            ,btn: ['确定']
+                            ,btnAlign: 'c'
+                            ,moveType: 1 //拖拽模式，0或者1
+                            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">内容<br>内容</div>'
+                            ,success: function(layero){
+
+                            }
+                        });
                     } else if (obj.event === 'del') {
 //                        layer.confirm('真的删除行么', function (index) {
 //                            obj.del();
