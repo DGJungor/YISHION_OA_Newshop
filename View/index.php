@@ -57,7 +57,7 @@ class Index
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">店铺</label>
                                             <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify=""
+                                                <input type="text" name="shop" lay-verify=""
                                                        placeholder="请输入店铺名" autocomplete="off" class="layui-input">
                                             </div>
                                         </div>
@@ -66,7 +66,7 @@ class Index
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">办事处</label>
                                             <div class="layui-input-block">
-                                                <select name="city" lay-verify="">
+                                                <select name="office" lay-verify="">
                                                     <option value=""></option>
                                                     <option value="1">广东办事处</option>
                                                     <option value="2">四川办事处</option>
@@ -78,10 +78,10 @@ class Index
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">状态</label>
                                             <div class="layui-input-block">
-                                                <select name="city" lay-verify="">
+                                                <select name="state" lay-verify="">
                                                     <option value=""></option>
-                                                    <option value="0">开启</option>
-                                                    <option value="1">关闭</option>
+                                                    <option value="1">开启</option>
+                                                    <option value="0">关闭</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -93,7 +93,7 @@ class Index
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">申报日期</label>
                                             <div class="layui-input-block">
-                                                <input id="declare" type="text" name="title" lay-verify=""
+                                                <input id="declare" type="text" name="declare_date" lay-verify=""
                                                        placeholder="请输入申报日期" autocomplete="off" class="layui-input">
                                             </div>
                                         </div>
@@ -102,7 +102,7 @@ class Index
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">开业日期</label>
                                             <div class="layui-input-block">
-                                                <input id="open" type="text" name="title" lay-verify=""
+                                                <input id="open" type="text" name="open_date" lay-verify=""
                                                        placeholder="请输入开业日期" autocomplete="off" class="layui-input">
                                             </div>
                                         </div>
@@ -110,11 +110,11 @@ class Index
                                     <div class="layui-col-md3 ">
                                         <div class="layui-form-item">
 
-                                            <div class="layui-form-item">
-                                                <div class="layui-input-block">
-                                                    <button class="layui-btn" lay-submit lay-filter="formDemo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-                                                </div>
+
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit lay-filter="searchBtn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                             </div>
+
 
                                         </div>
                                     </div>
@@ -137,13 +137,13 @@ class Index
         </div>
 
 
-
         <script src="./Public/layui/layui.all.js"></script>
         <script>
 
-            layui.use(['laydate', 'table'], function () {
+            layui.use(['laydate', 'table', 'form'], function () {
                 var laydate = layui.laydate;
                 var table = layui.table;
+                var form = layui.form;
 
                 //执行一个laydate实例
                 laydate.render({
@@ -176,10 +176,53 @@ class Index
                     ]] //设置表头
                     , page: true //开启分页
 //                    ,  data: [{id:1}]
-                    ,limits: [10,20,30]
-                    ,limit: 10
-                //,…… //更多参数参考右侧目录：基本参数选项
+                    , limits: [10, 20, 30]
+                    , limit: 10
+                    //,…… //更多参数参考右侧目录：基本参数选项
                 });
+
+
+                form.on('submit(searchBtn)', function (data) {
+//                    console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+//                    console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                    console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+
+                    var tableIns = table.render({
+                        elem: '#table'
+                        , method: 'post'
+                        , cols: [[ //标题栏
+                            {field: 'id', title: 'ID', width: 80}
+                            , {field: 'officeCN', title: '办事处', width: 120}
+                            , {field: 'sid', title: '店铺编号', width: 130}
+                            , {field: 'sname', title: '店铺名', width: 130}
+                            , {field: 'declare_date', title: '申报日期', width: 120}
+                            , {field: 'open_date', title: '开业日期', width: 120}
+                            , {field: 'state', title: '状态', width: 120}
+                            , {field: 'step', title: '步骤', width: 120}
+                            , {field: 'dep', title: '部门', width: 120}
+                            , {fixed: 'right', title: '操作', width: 130, align: 'center', toolbar: '#barDemo'}
+                        ]] //设置表头
+                        , url: '/./index.php?c=Ajax&a=search' //设置异步接口
+                        , page: true //开启分页
+//                    ,  data: [{id:1}]
+                        , limits: [10, 20, 30]
+                        , limit: 10
+//                        , id: 'idTest'
+                        , where: { //设定异步数据接口的额外参数，任意设
+                            shop: data.field.shop
+                            ,office : data.field.office
+                            ,state : data.field.state
+                            ,declare_date : data.field.declare_date
+                            ,open_date : data.field.open_date
+                            //…
+                        }
+                    });
+
+//
+
+                    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                });
+
 
 
                 //监听工具条

@@ -86,6 +86,9 @@ LIMIT :offset, :rows
 
     public function Search()
     {
+
+
+
         $res = json_encode($_POST);
         echo $res;
     }
